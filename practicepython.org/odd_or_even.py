@@ -63,13 +63,16 @@ def is_multifour(num):
 
 
 def is_divisible(a, b):
-    return a % b == 0
+    if b == 0:
+        return False
+    else:
+        return a % b == 0
 
 
 
 def main():
     try:
-        first = eval(input("Number: "))
+        first = int(input("Number: "))
     except ValueError:
         sys.exit("Not a Number.")
 
@@ -78,7 +81,6 @@ def main():
             print(f"The number {first} is a multiple of 4.")
         else:
             print(f"The number {first} is an Even number.")
-
     else:    #for odd message
         print(f"The number {first} is an Odd number.")
 
@@ -87,20 +89,15 @@ def main():
     print("\nPlease input TWO numbers...\n")
 
     try:
-        num = eval(input("First Number: "))
-        check = eval(input("Second Number: "))
-
-
+        num = int(input("First Number: "))
+        check = int(input("Second Number: "))
     except ValueError:
-        sys.exit("Not a number")
-
+        sys.exit("Not a number.")
 
     if is_divisible(num, check):
         print(f"The number {check} divides EVENLY into the number {num}.")
-
     else:
         print(f"The number {num} is not divisible by {check}.")
-
 
 
 if __name__ == "__main__":
