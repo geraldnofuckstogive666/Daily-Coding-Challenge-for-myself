@@ -65,8 +65,7 @@ def is_multifour(num):
 def is_divisible(a, b):
     if b == 0:
         return False
-    else:
-        return a % b == 0
+    return a % b == 0
 
 
 
@@ -92,7 +91,7 @@ def main():
         num = int(input("First Number: "))
         check = int(input("Second Number: "))
     except ValueError:
-        sys.exit("Not a number.")
+        sys.exit("Not a Number.")
 
     if is_divisible(num, check):
         print(f"The number {check} divides EVENLY into the number {num}.")
