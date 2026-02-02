@@ -88,7 +88,7 @@ print(new_list1)
 
 list2 = [randint(0,20) for _ in range(10)]
 print("\nSecond List: ", list2)
-[print(e,end=' ') for e in list2 if e < 5]  #since basic challenge is just printing the elements  and not the whole printed out list or at least that's what I understood 
+print(*[e for e in list2 if e < 5])  #since basic challenge is just printing the elements  and not the whole printed out list or at least that's what I understood 
 
 print('\n')
 try:
