@@ -66,8 +66,8 @@ and write a program that prints out all the elements of the list that are less t
 
         List3: [3, 5, 6, 7, 8, 3, 10, 8 , 20 , 3]
         Enter a number:       #this is for prompting user 
-        #so for example if user input 8, output would be:
-        3 5 6 7 3 3 
+        #so for example if user input 8, list returned would be:
+        [3, 5, 6, 7, 3, 3] 
 
         
 """
