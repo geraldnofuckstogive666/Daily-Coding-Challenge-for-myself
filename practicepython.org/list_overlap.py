@@ -27,7 +27,7 @@ Extras sol.
     2. As for the write this in one line of python, I am not sure if that includes the list intialization 
     but imma just  assume that it's not included and only refering the logic (solution) to the problem,
     so we can initialize a list (maybe still use the randint from random) maybe just use the randomly generated list from the 1st extra challenge 
-    then do a print then unpack of the list on a link comprehension with applied solution logic
+    then do a printk of the list on a link comprehension with applied solution logic
 
 
 so on the implementation I think i would try to implement the two solutions above just to see
