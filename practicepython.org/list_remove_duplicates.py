@@ -23,7 +23,7 @@ def remove_duplicate_with_loop(lst):
     return sorted(new_list)
 
 
-sample = [randint(1,20) for _ in range(20)]
+sample = [randint(1,20) for _ in range(21)]
 print(sample)
 print("1st function:", *remove_duplicates(sample))
 print("2nd function:", *remove_duplicate_with_loop(sample))
