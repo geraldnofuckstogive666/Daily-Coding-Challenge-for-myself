@@ -12,26 +12,29 @@ print out the text to the screen so that you can read the full article
 without having to click any buttons.
 
 """
-
-# Importing Modules
-from bs4 import BeautifulSoup
 import requests
+from bs4 import BeautifulSoup
 
-url = "http://www.vanityfair.com/society/2014/06/monica-lewinsky-humiliation-culture"
-response = requests.get(url)
-
-if response.status_code == 200:
-    data = response.text
-else:
-    print(f"Response from the server: {response.status_code}")
-
-soup = BeautifulSoup(data, 'html.parser')
-
-for line in soup.find_all("p"):
-    print(line.get_text(strip=True))
+URL = "http://www.vanityfair.com/society/2014/06/monica-lewinsky-humiliation-culture"
 
 
+def fetch_page(url: str) -> str:
+    response = requests.get(url, timeout=10)
+    response.raise_for_status()
+    return response.text
 
+def print_article_text(html: str) -> None:
+    soup = BeautifulSoup(html, "html.parser")
+    article = soup.find("article")
+    if not article:
+        raise RuntimeError("Article content not found")
 
+    for p in article.find_all("p"):
+        print(p.get_text())
 
+def main() -> None:
+    html = fetch_page(URL)
+    print_article_text(html)
 
+if __name__ == "__main__":
+    main()
