@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def file_writer(filename):
+def data_scraper() -> list[str]:
     url = "https://www.nytimes.com/"
     response = requests.get(url)
     if response.status_code == 200:
@@ -24,15 +24,27 @@ def file_writer(filename):
             article = title.get_text(" ",strip=True)
             articles.append(article)
 
-    with open(filename +'.txt', 'w') as open_file:
-        open_file.write('\n'.join(articles))
+    return articles
 
+
+
+def write_to_file(filename: str,data: list[str]) -> None:
+    if not data:
+        print("No data to write.")
+        return
+    
+    with open(filename +'.txt', 'w') as open_file:
+        open_file.write('\n'.join(data))
 
 
 def main():
-    user_input = input("Output file name: ")
-    file_writer(user_input)
-
+    user_input = input("Output file name: ").strip()
+    if not user_input:
+        print("Invalid filename.")
+        return
+    
+    data = data_scraper()
+    write_to_file(user_input,data)
 
 
 if __name__ == "__main__":
