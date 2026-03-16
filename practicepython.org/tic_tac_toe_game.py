@@ -117,16 +117,16 @@ def main():  #tic-tac-toe finallyyyyyy
         row, col = prompt_move(f"{players[turn]}'s move: ")
         current_player = players[turn]
         
-        if is_valid_move(game, row, col):
-            mark_move(game, players[turn], row, col)
-            turn = (turn + 1) % 2
-            print_grid(game)
-            winner = check_for_winner(game)
-        else:
+        if not is_valid_move(game, row, col):
             print("Invalid move. Square already taken.")
             continue
         
+        mark_move(game, players[turn], row, col)
+        turn = (turn + 1) % 2
+        print_grid(game)
+        winner = check_for_winner(game)
         
+
         
         if winner is not None:
             print(f"Congratulations! Winner is {current_player}.")
