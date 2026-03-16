@@ -1,10 +1,14 @@
 #Part 1 - https://www.practicepython.org/exercise/2014/12/27/24-draw-a-game-board.html
+#github: https://github.com/geraldnofuckstogive666/Daily-Coding-Challenge-for-myself/blob/main/practicepython.org/draw_a_game_board.py
 
 #Part 2 - https://www.practicepython.org/exercise/2015/11/16/26-check-tic-tac-toe.html
+#github: https://github.com/geraldnofuckstogive666/Daily-Coding-Challenge-for-myself/blob/main/practicepython.org/check_tic_tac_toe.py
 
 #Part 3 - https://www.practicepython.org/exercise/2015/11/26/27-tic-tac-toe-draw.html
+#github: https://github.com/geraldnofuckstogive666/Daily-Coding-Challenge-for-myself/blob/main/practicepython.org/tic_tac_toe_draw.py
 
 #Part 4 (This challenge) - https://www.practicepython.org/exercise/2016/08/03/29-tic-tac-toe-game.html
+
 
 game = [[" " for _ in range(3)] for _ in range(3)]
 intro = [["T", "I", "C"],
@@ -79,7 +83,7 @@ def check_for_winner(matrix):
         if result is not None:
             return result
 
-    for column in [list(row) for row in zip(*matrix)]:
+    for column in zip(*matrix):
         result = row_checker(column)
         if result is not None:
             return result
@@ -140,7 +144,3 @@ def main():  #tic-tac-toe finallyyyyyy
 if __name__ == "__main__":
     main()
     
-
-    
-
-        
