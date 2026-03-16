@@ -4,15 +4,38 @@
 
 #Part 4 (This challenge) - https://www.practicepython.org/exercise/2016/08/03/29-tic-tac-toe-game.html
 
-#----------------print 3x3 grid --------------
-def print_grid(gridsize=3, cell_char=0):
-    separator = ("+" + "---") * gridsize + "+"
+game = [[0, 0, 0],
+	[0, "X", 0],
+	[0, 0, 0]]
+
+
+
+#check first before update
+def is_valid_move(row, col):
+    return game[row][col] == 0
+
+#check after we update the board
+def is_no_move():
+    return 0 not in [cell for row in game for cell in row]
+
+
+def mark_move(player, row, col):
+    if player == "Player 1":
+        game[row][col] = "X"
+    else:
+        game[row][col] = "O"
+        
+        
+def print_grid(game):
+    separator = ("+" + "---") * 3 + "+"
     print(separator)
-    for _ in range(gridsize):
-        rows = ("|" + f" {cell_char} ") * gridsize + "|"
-        print(rows)
+    for row in game:
+        elements = ' | '.join(map(str,row))
+        print(f"| {elements} | ")
         print(separator)
-#---------------print 3x3 grid-----------------
+
+
+#----------------------------------
 
 
 #-------------checker for winner----------------
@@ -74,16 +97,9 @@ def final_check(matrix):
         print(f"Winner is {winner}.")
     else:
         print("No winner.")
+        
+        
 
 
-#------------------checker for winner----------
-
-
-def main():
-    print_grid()
-
-if __name__ == "__main__":
-    main()
-    
 
     
