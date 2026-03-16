@@ -1,43 +1,45 @@
 #Part 1 - https://www.practicepython.org/exercise/2014/12/27/24-draw-a-game-board.html
 
-#Part 2- https://www.practicepython.org/exercise/2015/11/16/26-check-tic-tac-toe.html
+#Part 2 - https://www.practicepython.org/exercise/2015/11/16/26-check-tic-tac-toe.html
+
+#Part 3 - https://www.practicepython.org/exercise/2015/11/26/27-tic-tac-toe-draw.html
 
 #Part 4 (This challenge) - https://www.practicepython.org/exercise/2016/08/03/29-tic-tac-toe-game.html
 
-game = [[0, 0, 0],
-	[0, "X", 0],
-	[0, 0, 0]]
+game = [[" " for _ in range(3)] for _ in range(3)]
+intro = [["T", "I", "C"],
+    ["T", "A", "C"],
+    ["T", "O", "E"]]
+
+
+def print_grid(matrix):
+    print()
+    separator = ("+" + "---") * 3 + "+"
+    print(separator.center(50))
+    for row in matrix:
+        elements = ' | '.join(map(str,row))
+        print(f"| {elements} | ".center(50))
+        print(separator.center(50))
+    print()
 
 
 
-#check first before update
-def is_valid_move(row, col):
-    return game[row][col] == 0
 
-#check after we update the board
+def is_valid_move(row, col, matrix=game):
+    return matrix[row][col] == " "
+
+
 def is_no_move():
-    return 0 not in [cell for row in game for cell in row]
+    return " " not in [cell for row in game for cell in row]
+    
 
-
-def mark_move(player, row, col):
+def mark_move(player, row, col):    
     if player == "Player 1":
         game[row][col] = "X"
     else:
         game[row][col] = "O"
         
         
-def print_grid(game):
-    separator = ("+" + "---") * 3 + "+"
-    print(separator)
-    for row in game:
-        elements = ' | '.join(map(str,row))
-        print(f"| {elements} | ")
-        print(separator)
-
-
-#----------------------------------
-
-
 #-------------checker for winner----------------
 def row_checker(row: list) -> int:
     values = set(row)
@@ -47,7 +49,7 @@ def row_checker(row: list) -> int:
 
     winner = values.pop()
 
-    if winner == 0:
+    if winner == " ":
         return None
 
     return winner
@@ -63,23 +65,21 @@ def diagonal_checker(matrix: list) -> int:
         values = set(diag)
         if len(values) == 1:
             winner = values.pop()
-            if winner != 0:
+            if winner != " ":
                 return winner
 
     return None
 
 
-def transposed_matrix(matrix: list) -> list:
-    return [list(row) for row in zip(*matrix)]
 
 
-def winner_is(matrix: list) -> int:
+def check_for_winner(matrix):
     for row in matrix:
         result = row_checker(row)
         if result is not None:
             return result
 
-    for column in transposed_matrix(matrix):
+    for column in [list(row) for row in zip(*matrix)]:
         result = row_checker(column)
         if result is not None:
             return result
@@ -91,15 +91,52 @@ def winner_is(matrix: list) -> int:
     return None
     
 
-def final_check(matrix):
-    winner = winner_is(matrix)
-    if winner is not None:
-        print(f"Winner is {winner}.")
-    else:
-        print("No winner.")
+
         
+def prompt_move(prompt):
+    while True:
+        try:
+            row, col = map(int, input(prompt).split(','))
+        except ValueError:
+            continue
         
+        if 1 <= row <=3 and 1 <= col <= 3:
+            return row - 1, col - 1
+            
 
 
+def main():  #tic-tac-toe finallyyyyyy
+    print("Tic-Tac-Toe Game".center(50,"-"))
+    print_grid(intro)
+    print("Rules:\nPlayers must input row and column in the format (row,col)\nwhere they want to put their move\nwherein col and row should be in between 1 and 3\nExample input: 1, 2\nFirst to line up 3 components wins the game.\n")
+    
+    players = ["Player 1", "Player 2"]
+    turn = 0
+    
+    while True:
+        row, col = prompt_move(f"{players[turn]}'s move: ")
+        current_player = players[turn]
+        
+        if is_valid_move(row, col):
+            mark_move(players[turn], row, col)
+            turn = (turn + 1) % 2
+            print_grid(game)
+        
+        winner = check_for_winner(game)
+        
+        if winner is not None:
+            print(f"Congratulations! Winner is {current_player}.")
+            return
+    
+        if is_no_move():
+            print("No winner.")
+            return
+
+
+if __name__ == "__main__":
+    main()
+    
 
     
+
+        
