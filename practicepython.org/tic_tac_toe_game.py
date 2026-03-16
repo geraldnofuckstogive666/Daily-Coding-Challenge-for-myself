@@ -25,23 +25,23 @@ def print_grid(matrix):
 
 
 
-def is_valid_move(row, col, matrix=game):
+def is_valid_move(matrix, row, col):
     return matrix[row][col] == " "
 
 
-def is_no_move():
-    return " " not in [cell for row in game for cell in row]
+def is_no_move(matrix):
+    return " " not in [cell for row in matrix for cell in row]
     
 
-def mark_move(player, row, col):    
+def mark_move(matrix, player, row, col):    
     if player == "Player 1":
-        game[row][col] = "X"
+        matrix[row][col] = "X"
     else:
-        game[row][col] = "O"
+        matrix[row][col] = "O"
         
         
 #-------------checker for winner----------------
-def row_checker(row: list) -> int:
+def row_checker(row):
     values = set(row)
 
     if len(values) != 1:
@@ -55,7 +55,7 @@ def row_checker(row: list) -> int:
     return winner
 
 
-def diagonal_checker(matrix: list) -> int:
+def diagonal_checker(matrix):
     size = len(matrix)
 
     diag1 = [matrix[i][i] for i in range(size)]
@@ -117,18 +117,22 @@ def main():  #tic-tac-toe finallyyyyyy
         row, col = prompt_move(f"{players[turn]}'s move: ")
         current_player = players[turn]
         
-        if is_valid_move(row, col):
-            mark_move(players[turn], row, col)
+        if is_valid_move(game, row, col):
+            mark_move(game, players[turn], row, col)
             turn = (turn + 1) % 2
             print_grid(game)
+            winner = check_for_winner(game)
+        else:
+            print("Invalid move. Square already taken.")
+            continue
         
-        winner = check_for_winner(game)
+        
         
         if winner is not None:
             print(f"Congratulations! Winner is {current_player}.")
             return
     
-        if is_no_move():
+        if is_no_move(game):
             print("No winner.")
             return
 
