@@ -10,8 +10,11 @@ def fetch_words(file_name: str) -> list[str]:
             return [line.strip() for line in open_file]
     except FileNotFoundError:
         print(f"Error: {file_name} not found.")
+        return []
 
 def pick_word(words: list[str])-> str:  #random word
+    if not words:
+        return "No words available."
     return random.choice(words)
 
 
