@@ -5,15 +5,7 @@ def mask_word(word) -> str:
     return "_ " * len(word)
 
 def update_mask(word, tracker):
-    masked_word = ""
-    for char in word:
-        if tracker[char] == True:
-            masked_word += f"{char} "
-        else:
-            masked_word += "_ "
-    
-    return masked_word.strip()
-
+    return " ".join(char if tracker[char] else "_" for char in word)
 
 def word_to_dict(word):
     return  {char: False for char in word}
