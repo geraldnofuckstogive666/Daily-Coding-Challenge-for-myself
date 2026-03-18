@@ -16,39 +16,39 @@ def update_mask(word, tracker):
 
 
 def word_to_dict(word):
-    tracker = {}
-    for char in word:
-        tracker[char] = tracker.get(char, False)
-    return tracker
-
-
-def update_tracker(tracker, letter):
-    return tracker.update({letter: True})
+    return  {char: False for char in word}
 
 
 def main():
     guess_word = "EVAPORATE"
-    print(mask_word(guess_word))
     tracker = word_to_dict(guess_word)
+    guessed_letters = set()
+
+    print(mask_word(guess_word))
 
     while True:
         letter = input("Guess your letter: ").upper()
 
+        if len(letter) != 1 or not letter.isalpha():
+            print("Please enter a single letter.")
+            continue
+
+        if letter in guessed_letters:
+            print("You already guessed that letter.")
+        
+        guessed_letters.add(letter)
+
         if letter not in guess_word:
             print("Incorrect!")
             continue
-        
-        if tracker[letter] == True:
-            print("You already guessed that letter correctly.")
-            continue
 
-        update_tracker(tracker, letter)
+        tracker[letter] = True
         print(update_mask(guess_word, tracker))
-
 
         if all(tracker.values()):
             print("Congratulations. You guessed it right!")
             break
+
 
 if __name__ == "__main__":
     main()
