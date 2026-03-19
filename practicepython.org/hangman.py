@@ -8,6 +8,7 @@
 import sys
 import random
 
+
 FILE_NAME = 'sowpods_dictionary.txt'
 
 def fetch_words(file_name: str) -> list[str]:
@@ -34,7 +35,16 @@ def word_to_dict(word):
     return  {char: False for char in word}
 
 
-
+def draw_hangman(n):
+    parts = ['  O',' /', '|',  '\\', ' /', ' \\ ']
+    print("  |"+"-"*30+"\n  |" + " "*23 + "HANGMAN")
+    
+    for part in parts[:6-n]:
+        if part in (' /', '|',' |'):
+            print(part, end="")        
+        else:
+            print(part)
+    print()
 
 
 
@@ -46,13 +56,9 @@ def main():
     guessed_letters = set()
     guesses_left = 6
     
-    print(guess_word)
     print(mask_word(guess_word))
 
     while True:
-        if guesses_left <= 0:
-            print("Game Over.")
-            break
 
         letter = input("Guess your letter: ").upper()
 
@@ -69,7 +75,12 @@ def main():
         if letter not in guess_word:
             print("Incorrect!")
             guesses_left -= 1
+            draw_hangman(guesses_left)
             print(f"You have {guesses_left} {"guesses" if guesses_left > 1 else "guess"} left.")
+
+            if guesses_left == 0:
+                print("Game Over.")
+                break
             continue
 
         tracker[letter] = True
@@ -92,3 +103,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
