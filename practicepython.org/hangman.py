@@ -5,9 +5,8 @@
 #github: https://github.com/geraldnofuckstogive666/Daily-Coding-Challenge-for-myself/blob/main/practicepython.org/guess_letters.py
 
 #part 3 (this challenge) - https://www.practicepython.org/exercise/2017/01/10/32-hangman.html
-import sys
-import random
 
+import random
 
 FILE_NAME = 'sowpods_dictionary.txt'
 
@@ -25,8 +24,8 @@ def pick_word(words: list[str])-> str | None:  #random word
     return random.choice(words)
 
 
-def mask_word(word) -> str:
-    return "_ " * len(word)
+def mask_word(word: str) -> str:
+    return " ".join("_" for _ in word)
 
 def update_mask(word, tracker):
     return " ".join(char if tracker[char] else "_" for char in word)
@@ -48,63 +47,63 @@ def draw_hangman(n):
 
 
 
-
-def main():
+def play_hangman():
     words = fetch_words(FILE_NAME)
     guess_word = pick_word(words)
+ 
+
+    if guess_word is None:
+        print("No words available. Exiting Game...")
+        return
+
     tracker = word_to_dict(guess_word)
-    guessed_letters = set()
+    letters_guessed = set()
     guesses_left = 6
-    
+
     print(mask_word(guess_word))
 
-    while True:
-
+    while guesses_left > 0:
         letter = input("Guess your letter: ").upper()
 
         if len(letter) != 1 or not letter.isalpha():
-            print("Please enter a single letter.")
+            print("Please input a single letter.")
+            continue
+            
+        if letter in letters_guessed:
+            print("You have already used that letter.")
             continue
 
-        if letter in guessed_letters:
-            print("You already guessed that letter.")
-            continue
-        
-        guessed_letters.add(letter)
+        letters_guessed.add(letter)
 
         if letter not in guess_word:
-            print("Incorrect!")
             guesses_left -= 1
+            print("Incorrect.")
+            print(f"You have {guesses_left} {'guesses' if guesses_left > 1 else 'guess'} left.")
             draw_hangman(guesses_left)
-            print(f"You have {guesses_left} {"guesses" if guesses_left > 1 else "guess"} left.")
-
+            
             if guesses_left == 0:
-                print("Game Over.")
-                break
+                print(f"Game Over. The word was {guess_word}.")
+                return
             continue
-
+    
         tracker[letter] = True
         print(update_mask(guess_word, tracker))
 
-        if all(tracker.values()):
-            print("Congratulations. You guessed it right!")
-            break
-    
 
-    
-    retry_again = input("Play again? Y/N: ").upper()
-    if retry_again == "Y":
-        main()
-    elif retry_again == "N":
-        sys.exit("Thanks for playing. Game Terminated.")
-    else:
-        sys.exit("Not quite right. Game Terminated.")
+        if all(tracker.values()):
+            print('You guessed it right!.')
+            return
+        
+
+def main():
+    while True:
+        play_hangman()
+        retry = input("Play again? Y/N: ").upper()
+
+        if retry != "Y":
+            print("Thanks for playing")
+            return
         
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
