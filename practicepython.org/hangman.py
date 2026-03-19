@@ -27,10 +27,10 @@ def pick_word(words: list[str])-> str | None:  #random word
 def mask_word(word: str) -> str:
     return " ".join("_" for _ in word)
 
-def update_mask(word, tracker):
+def update_mask(word: str, tracker:dict[str, bool]) -> str:
     return " ".join(char if tracker[char] else "_" for char in word)
 
-def word_to_dict(word):
+def word_to_dict(word: str) -> dict[str, bool]:
     return  {char: False for char in word}
 
 
@@ -80,7 +80,8 @@ def play_hangman():
             print("Incorrect.")
             print(f"You have {guesses_left} {'guesses' if guesses_left > 1 else 'guess'} left.")
             draw_hangman(guesses_left)
-            
+            print(update_mask(guess_word, tracker))
+
             if guesses_left == 0:
                 print(f"Game Over. The word was {guess_word}.")
                 return
@@ -91,17 +92,18 @@ def play_hangman():
 
 
         if all(tracker.values()):
-            print('You guessed it right!.')
+            print(f'You guessed it right!. The word was {guess_word}')
             return
         
 
 def main():
+    print("Welcome to Hangman.\n\nTry to guess the word.")
     while True:
         play_hangman()
         retry = input("Play again? Y/N: ").upper()
 
         if retry != "Y":
-            print("Thanks for playing")
+            print("Thanks for playing. Exiting Game.")
             return
         
 
