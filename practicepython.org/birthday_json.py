@@ -37,7 +37,7 @@ birthdays = {
 FILE_PATH = 'birthdays.json'
 
 
-def display_names(data: dict[str]):
+def display_names(data: dict[str, str]):
     print(*data.keys(),sep="\n")
 
 
@@ -54,37 +54,33 @@ def is_datetime_format(date_string: str, format_code="%m/%d/%Y") -> bool:
 
 
 
-def birthday_to_json(file_path, file):
-    with open(file_path, 'w') as f:
-        json.dump(file, f, indent=4)
-
-
-def add_birthday(name, birthday, file_path):
+def initialize_file(file_path, default_data):
     try:
-        with open(file_path, 'r') as f:
-            data = json.load(f)
-    except FileNotFoundError:
-        data = {}
-    except json.JSONDecodeError:
-        data = {}
+        with open(file_path, 'x') as f:
+            json.dump(default_data, f, indent=4)
+    except FileExistsError:
+        pass
 
-    data[name] = birthday
 
-    with open(file_path, 'w') as f:
-        json.dump(data, f, indent=4)
-   
 
-def fetch_birthdays(file_path: str) -> dict[str, str] | None:
+def fetch_birthdays(file_path: str) -> dict[str, str]:
     try:
         with open(file_path, 'r') as f:
             return json.load(f)
-    except FileNotFoundError:
-        return None
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+
+def birthday_to_json(file_path, data):
+    with open(file_path, "w") as f:
+        json.dump(data, f, indent= 4)
 
 
 
 def main():
-    birthday_to_json(FILE_PATH, birthdays)   #this challenge
+    initialize_file(FILE_PATH, birthdays)  #this challenge
+
+    data = fetch_birthdays(FILE_PATH)
 
     while True:
         try:
@@ -94,19 +90,23 @@ def main():
             continue
 
     while add_count > 0:
-        name = input("Name: ").title()
-        birthday = input("Birthdate: ")
+        name = input("Name: ").strip()
+        
+        if not name:
+            print("Name cannot be empty.")
+            continue
+        
+        birthday = input("Birthdate (MM/DD/YYYY): ")
+
         if is_datetime_format(birthday):
-            add_birthday(name, birthday, FILE_PATH)
+            data[name] = birthday
             add_count -= 1
         else:
-            print("Birthdate should be in the format:  m/d/y")
-            continue
+            print("INVALID FORMAT. (MM/DD/YYYY)")
+            
+    
+    birthday_to_json(FILE_PATH, data)
 
-    #demo to see
-    new_birthdays = fetch_birthdays(FILE_PATH)
-    display_names(new_birthdays)
-    print(get_birthday(new_birthdays,"Gerald Desu"))
 
 
 if __name__ == "__main__":
