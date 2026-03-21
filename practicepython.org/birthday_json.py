@@ -3,8 +3,9 @@
 
 #part 1 - https://www.practicepython.org/exercise/2017/01/24/33-birthday-dictionaries.html
 #github - https://github.com/geraldnofuckstogive666/Daily-Coding-Challenge-for-myself/blob/main/practicepython.org/birthday_dictionaries.py
-
-
+import sys
+import json
+from datetime import datetime
 
 
 birthdays = {
@@ -33,7 +34,10 @@ birthdays = {
     'Jane Goodall': '04/03/1934'
 }
 
-def display_names(data):
+FILE_PATH = 'birthdays.json'
+
+
+def display_names(data: dict[str]):
     print(*data.keys(),sep="\n")
 
 
@@ -41,10 +45,7 @@ def get_birthday(data, name):
     return data.get(name)
 
 
-
-from datetime import datetime
-
-def is_datetime_format(date_string, format_code="%m/%d/%Y"):
+def is_datetime_format(date_string: str, format_code="%m/%d/%Y") -> bool:
   try:
     datetime.strptime(date_string, format_code)
     return True
@@ -52,3 +53,61 @@ def is_datetime_format(date_string, format_code="%m/%d/%Y"):
     return False
 
 
+
+def birthday_to_json(file_path, file):
+    with open(file_path, 'w') as f:
+        json.dump(file, f, indent=4)
+
+
+def add_birthday(name, birthday, file_path):
+    try:
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        data = {}
+    except json.JSONDecodeError:
+        data = {}
+
+    data[name] = birthday
+
+    with open(file_path, 'w') as f:
+        json.dump(data, f, indent=4)
+   
+
+def fetch_birthdays(file_path: str) -> dict[str, str] | None:
+    try:
+        with open(file_path, 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return None
+
+
+
+def main():
+    birthday_to_json(FILE_PATH, birthdays)   #this challenge
+
+    while True:
+        try:
+            add_count = int(input("How many do you want to add on the birthday dictionary? "))
+            break
+        except ValueError:
+            continue
+
+    while add_count > 0:
+        name = input("Name: ").title()
+        birthday = input("Birthdate: ")
+        if is_datetime_format(birthday):
+            add_birthday(name, birthday, FILE_PATH)
+            add_count -= 1
+        else:
+            print("Birthdate should be in the format:  m/d/y")
+            continue
+
+    #demo to see
+    new_birthdays = fetch_birthdays(FILE_PATH)
+    display_names(new_birthdays)
+    print(get_birthday(new_birthdays,"Gerald Desu"))
+
+
+if __name__ == "__main__":
+    main()
